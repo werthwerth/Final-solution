@@ -1,13 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Final.EFW.Entities;
-using System.Xml.Linq;
-using static Final.EFW.Database.Core;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Final.EFW.Database.EntityActions;
-using System.Runtime.CompilerServices;
 using Final.Static;
-using System;
 
 namespace Final.EFW.Database
 {
@@ -35,7 +29,7 @@ namespace Final.EFW.Database
 
             protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             {
-                optionsBuilder.UseSqlite("Data Source=Final.db");
+                optionsBuilder.UseSqlite("Data Source=../Database/Final.db");
             }
             protected override void OnModelCreating(ModelBuilder modelBuilder)
             {

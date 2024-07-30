@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Identity;
 using Final.EFW.Entities;
 using static Final.EFW.Database.Core;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
 namespace Final.EFW.Database.EntityActions
 {
-    internal class UserEntity
+    public class UserEntity
     {      
         protected internal static bool Check(string _login, DB _db)
         {
@@ -47,6 +49,11 @@ namespace Final.EFW.Database.EntityActions
             User? _user = _db.context.Users.FirstOrDefault(x => x.Id == _id);
             return _user;
         }
+        public static User? GetById(string _id)
+        {
+            DB _db = new DB();
+            return GetById(_id, _db);
+        }
         protected internal static User? Authorization(string _login, string _password, DB _db)
         {
             User? _user = _db.context.Users.FirstOrDefault(x => x.Login == _login && x.PasswordHash == _password) ?? null;
@@ -67,6 +74,29 @@ namespace Final.EFW.Database.EntityActions
         protected internal static List<User> GetAll (DB _db)
         {
             return _db.context.Users.ToList();
+        }
+        public static List<User> GetAll()
+        {
+            DB _db = new DB();
+            return GetAll(_db);
+        }
+        protected internal static void Delete(DB _db, User _user)
+        {
+            _db.context.Users.Where(x => x == _user).ExecuteDelete();
+            _db.context.SaveChanges();
+        }
+        protected internal static void Delete(DB _db, string _userId)
+        {
+            var _user = GetById(_userId, _db);
+            if (_user != null)
+            {
+                Delete(_db, _user);
+            }
+        }
+        public static void Delete(string _userId)
+        {
+            DB _db = new DB();
+            Delete(_db, _userId);
         }
     }
 }
